@@ -7,7 +7,7 @@ const Cart = (props) => {
    let  itemPrice=0;
    for (let i = 0; i < cart.length; i++) {
        const product = cart[i];
-       itemPrice=itemPrice+product.price*product.quantity;
+       itemPrice=itemPrice+product.price*product.quantity || 1;
    }
    const taxPrice=itemPrice*0.14;
     //const shippingPrice = itemPrice > 50 ? 0: 4;
