@@ -12,20 +12,25 @@ const Shop = () => {
   //const first10 = fakeData.slice(0, 10);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [search,setSearch]=useState('')
   //console.log(products);
   document.title="Shop More";
 
 
   useEffect(()=>{
-     fetch('http://localhost:5000/products')
+     fetch('https://aqueous-temple-36330.herokuapp.com/products?search='+search)
      .then(res => res.json())
      .then(data => setProducts(data))
-  },[])
+  },[search])
 
+// Server Side Code 
+// const search=req.query.search;
+// productCollection.find({name: {$regex:search}})
+    
   useEffect(() => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
-    fetch('http://localhost:5000/productByKeys', {
+    fetch('https://aqueous-temple-36330.herokuapp.com/productByKeys', {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -54,10 +59,15 @@ const Shop = () => {
     setCart(newCart);
     addToDatabaseCart(product.key, count);
   };
+  
+  const handleSearch=(event)=>{
+    setSearch(event.target.value);
+  }
 
   return (
     <div className="shop-container">
       <div className="product-container">
+      <input type="text" onBlur={handleSearch} placeholder="search product"/>
         {products.length===0 && <p>loading....</p>}
         {products.map((product) => (
           <Product
